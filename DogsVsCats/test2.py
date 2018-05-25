@@ -51,14 +51,16 @@ import pickle
 import numpy as np
 import time
 import random
+from keras import optimizers
 from keras.models import Sequential
+from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense, Activation, Dropout, Flatten
 from keras.optimizers import RMSprop
 from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
 
 input_shape = (224, 224, 3)
-BATCH_SIZE = 128
+BATCH_SIZE = 16
 EPOCH = 500
 
 model = Sequential([
@@ -84,11 +86,21 @@ model = Sequential([
     Flatten(),
     Dense(4096, activation='relu'),
     Dense(4096, activation='relu'),
-    Dense(2, activation='softmax')
+    Dense(2, activation='sigmoid')
 ])
 
-model.compile(optimizer=RMSprop(lr=0.001, rho=0.9), loss='categorical_crossentropy', metrics=['accuracy'])
-model.fit(train_x, train_y, epochs=EPOCH, batch_size=BATCH_SIZE, verbose=1)
+#model.compile(optimizer=RMSprop(lr=0.001, rho=0.9), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
+              metrics=['accuracy'])
+
+
+filepath="weights.best.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+callbacks_list = [checkpoint]
+
+# Fit the model
+model.fit(train_x, train_y, validation_split=0.2, epochs=EPOCH, batch_size=BATCH_SIZE, callbacks=callbacks_list, verbose=1)
+#model.fit(train_x, train_y, epochs=EPOCH, batch_size=BATCH_SIZE, verbose=1)
 
 evaluation = model.evaluate(test_x, test_y, verbose=1)
 print('Summary: Loss over the test dataset: %.2f, Accuracy: %.2f' % (evaluation[0], evaluation[1]))

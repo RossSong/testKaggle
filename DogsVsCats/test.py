@@ -233,6 +233,8 @@ with tf.Session() as sess:
             print("Train loss: {:g}, Train acc: {:g}".format(train_cost, train_accuracy))
             print("Valid loss: {:g}, Valid acc: {:g}".format(valid_cost, valid_accuracy))
             print("Time usage: " + str(timedelta(seconds=int(round(time_dif)))))
-
-        saver.save(sess, "DogsVsCats("+str(i)+")")
+        
+        fileName = ".\\DogsVsCats_" + str(i)         
+        print(fileName)
+        saver.save(sess, fileName)
 

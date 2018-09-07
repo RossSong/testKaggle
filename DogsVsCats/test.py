@@ -204,7 +204,7 @@ softmax = tf.nn.softmax(logits=score)
 correct_prediction = tf.equal(prediction, tf.argmax(input_y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 EPOCH = 500
 cnt=0
 saver = tf.train.Saver()
@@ -234,5 +234,5 @@ with tf.Session() as sess:
             print("Valid loss: {:g}, Valid acc: {:g}".format(valid_cost, valid_accuracy))
             print("Time usage: " + str(timedelta(seconds=int(round(time_dif)))))
 
-        saver.save(sess, "/Users/ross/testKaggle/DogsVsCats("+str(i)+")")
+        saver.save(sess, "DogsVsCats("+str(i)+")")
 

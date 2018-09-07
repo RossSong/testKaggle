@@ -5,9 +5,13 @@ from scipy.misc import imresize
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from datetime import timedelta
+import pickle
 
-train_path = '/Users/ross/testKaggle/DogsVsCats/train/'
-test_path = '/Users/ross/testKaggle/DogsVsCats/test1/'
+train_path = '.\\data\\train\\'
+test_path = '.\\data\\test1\\'
+
+label_pickle = 'label.pickle'
+array_pickle = 'array.pickle'
 
 def get_label(path):
     labels = []
@@ -27,9 +31,38 @@ def get_array(path):
         print(cnt)
     return img_array
 
-label = get_label(train_path)
-array = get_array(train_path)
+def saveLabel():
+    label = get_label(train_path)
+    with open(label_pickle, 'wb') as f:
+        pickle.dump(label, f, pickle.HIGHEST_PROTOCOL)
 
+def saveArray():
+    array = get_array(train_path)
+    with open(array_pickle, 'wb') as f:
+        pickle.dump(array, f, pickle.HIGHEST_PROTOCOL)
+
+def loadLabel():
+    if False == os.path.exists(label_pickle):
+        saveLabel()
+
+    label = []
+    with open('label.pickle', 'rb') as f:
+        label = pickle.load(f)
+
+    return label
+
+def loadArray():
+    if False == os.path.exists(array_pickle):
+        saveArray()
+
+    array = []
+    with open('array.pickle', 'rb') as f:
+        array = pickle.load(f)
+    
+    return array
+
+label = loadLabel()
+array = loadArray()
 
 train_x, test_x, train_y, test_y = train_test_split(array, label, test_size=0.2)
 test_set = pd.DataFrame({'x': test_x, 'y': test_y})

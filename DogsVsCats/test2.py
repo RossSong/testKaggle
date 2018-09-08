@@ -70,8 +70,8 @@ test_set = pd.DataFrame({'x': test_x, 'y': test_y})
 train_x = np.array(train_x)
 test_x = np.array(test_x)
 
-train_x = train_x.reshape(train_x.shape[0], 224, 224, 3)
-test_x = test_x.reshape(test_x.shape[0], 224, 224, 3)
+train_x = train_x.reshape(train_x.shape[0], 120, 120, 3)
+test_x = test_x.reshape(test_x.shape[0], 120, 120, 3)
 
 print(train_x.shape)
 print(test_x.shape)
@@ -92,7 +92,7 @@ from keras.optimizers import RMSprop
 from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
 
-input_shape = (224, 224, 3)
+input_shape = (120, 120, 3)
 BATCH_SIZE = 16
 EPOCH = 500
 

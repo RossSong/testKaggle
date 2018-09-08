@@ -94,6 +94,7 @@ from keras import optimizers
 from keras.optimizers import RMSprop
 from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
+from keras.applications import VGG16
 
 input_shape = (120, 120, 3)
 BATCH_SIZE = 128
